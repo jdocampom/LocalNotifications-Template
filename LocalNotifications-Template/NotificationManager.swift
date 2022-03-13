@@ -52,23 +52,22 @@ final class NotificationManager: ObservableObject {
             
             if dateComponents.hour! > 23 {
                 break
+            } else {
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+                
+                let notificationContent = UNMutableNotificationContent()
+                
+                notificationContent.title = title == ""   ? "Notification Title" : title
+                notificationContent.body  = body  == ""   ? "Notification Title" : body
+                notificationContent.sound = .default
+                
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
+                
+                print("⏰ HOUR COMPONENT: \(hour) ⏰")
+                print("⏰ MINUTE COMPONENT: \(minute) ⏰")
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: completion)
             }
-            
-            
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-            
-            let notificationContent = UNMutableNotificationContent()
-            
-            notificationContent.title = title == ""   ? "Notification Title" : title
-            notificationContent.body  = body  == ""   ? "Notification Title" : body
-            notificationContent.sound = .default
-            
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
-            
-            print("⏰ HOUR COMPONENT: \(hour) ⏰")
-            print("⏰ MINUTE COMPONENT: \(minute) ⏰")
-            
-            UNUserNotificationCenter.current().add(request, withCompletionHandler: completion)
             
         }
     }
