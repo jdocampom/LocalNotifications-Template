@@ -14,6 +14,7 @@ struct CreateNotificationView: View {
     @State private var title         = ""
     @State private var content       = ""
     @State private var date          = Date()
+    @State private var number        = 1
     
     @Binding var isPresented: Bool
     
@@ -32,6 +33,12 @@ struct CreateNotificationView: View {
             Section(header: Text("Notification Details")) {
                 TextField("Title", text: $title)
                 TextField("Body", text: $content)
+                HStack {
+                    Text("Number")
+                    Spacer()
+                    Stepper("\(number)", value: $number, in: 1...12)
+                        .multilineTextAlignment(.trailing)
+                }
             }
             Section(header: Text("Scheduling Details")) {
                 DatePicker("Notify Me At", selection: $date, displayedComponents: [.hourAndMinute])
@@ -56,7 +63,7 @@ struct CreateNotificationView: View {
                 Button {
                     let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: date)
                     guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return }
-                    notificationManager.createLocalNotification(title: title, body: content, hour: hour, minute: minute) { error in
+                    notificationManager.createLocalNotification(title: title, body: content, hour: hour, minute: minute, count: number) { error in
                         if error == nil {
                             DispatchQueue.main.async {
                                 self.isPresented = false

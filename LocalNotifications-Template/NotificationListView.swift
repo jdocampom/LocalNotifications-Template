@@ -3,7 +3,7 @@
 //  LocalNotifications-Template
 //
 //  Created by Juan Diego Ocampo on 13/03/2022.
-// 
+//
 
 import SwiftUI
 
@@ -124,15 +124,17 @@ struct NotificationListView: View {
 }
 
 extension NotificationListView {
-    func delete(_ indexSet: IndexSet) {
+    
+    fileprivate func delete(_ indexSet: IndexSet) {
         notificationManager.deleteLocalNotifications(
             identifiers: indexSet.map { notificationManager.notifications[$0].identifier }
         )
         notificationManager.reloadLocalNotifications()
     }
+    
 }
 
-struct NotificationListView_Previews: PreviewProvider {
+fileprivate struct NotificationListView_Previews: PreviewProvider {
     static var previews: some View {
         NotificationListView()
     }
